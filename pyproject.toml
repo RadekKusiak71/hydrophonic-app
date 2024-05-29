@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "lunascientific"
+version = "0.1.0"
+description = ""
+authors = ["RadekKusiak71 <radoslawkusiak12@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.0.6"
+djangorestframework = "^3.15.1"
+djangorestframework-simplejwt = "^5.3.1"
+django-cors-headers = "^4.3.1"
+python-dotenv = "^1.0.1"
+psycopg2-binary = "^2.9.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
