@@ -17,6 +17,7 @@ class Measurement(models.Model):
     water_ph = models.FloatField(
         validators=[MinValueValidator(0.0), MaxValueValidator(14.0)])
     tds = models.PositiveIntegerField(validators=[MinValueValidator(0)])
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return f"Data - temp: {self.temperature}, pH: {self.ph}, TDS: {self.tds}ppm"
+        return f"Data - temp: {self.water_temperature}, pH: {self.water_ph}, TDS: {self.tds}ppm"

@@ -32,10 +32,10 @@ class TestHydroponicSystemsEndpoints(APITestCase):
         response = self.client.get("/api/systems/",
                                    headers={"Authorization": f"Bearer {self.get_access_token(self.login_data)}"})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        # Making sure only systems for current user are returned
-        for system in response.json():
-            self.assertEqual(system.get("owner"), self.user.id)
+        # Making sure only systems for the current user are returned
+        for system in response.json().get("results", []):
+            self.assertEqual(system.get("owner"),
+                             self.user.id)
 
     def test_system_ownership(self):
         # Using testSystem2 and passing user that is not an owner for this system
