@@ -145,15 +145,6 @@ DATABASES = {
         "HOST": os.environ.get("PG_HOST"),
         "PORT": os.environ.get("PG_PORT"),
     },
-    # Database for testing
-    'test': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'test_hydrophonic',
-        "USER": os.environ.get("PG_USER"),
-        "PASSWORD": os.environ.get("PG_PASSWORD"),
-        "HOST": os.environ.get("PG_HOST"),
-        "PORT": os.environ.get("PG_PORT"),
-    }
 }
 
 # Password validation

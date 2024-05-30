@@ -1,11 +1,36 @@
 version: '3.8'
 
 services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    command: python3 manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - database
+      
   database:
+    restart: always
     image: postgres
     environment:
       - POSTGRES_DB=${PG_DATABASE}
       - POSTGRES_USER=${PG_USER}
       - POSTGRES_PASSWORD=${PG_PASSWORD}
+    env_file:
+      - .env
     ports:
       - "5433:5432"
+
+  migrate:
+    build: .
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    command: python3 manage.py migrate
+    depends_on:
+      - web
