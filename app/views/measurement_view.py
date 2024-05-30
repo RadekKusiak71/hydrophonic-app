@@ -60,6 +60,9 @@ class ListLatestMeasurementView(generics.ListAPIView):
 
 
 class CreateMeasurementView(generics.CreateAPIView):
+    """
+        Creating measurement instance for system
+    """
     authentication_classes = (JWTAuthentication,)
     permission_classes = [IsAuthenticated]
     queryset = Measurement.objects.all()

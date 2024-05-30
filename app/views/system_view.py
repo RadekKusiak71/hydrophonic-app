@@ -25,11 +25,18 @@ class HydroponicSystemViewSet(viewsets.ViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = HydroponicSystemFilterSet
 
+    """
+        All methods needs Authorization : Bearer <user_token> in headers
+    """
+
     def list(self, request):
+        """
+            Method for fetching data about his hydroponic systems
+        """
         # Method is fetching systems for currently logged user
         systems = HydroponicSystem.objects.filter(owner=request.user.id)
         filtered_systems = self.filter_queryset(systems)
-        
+
         # Paginating data
         paginator = self.pagination_class()
         paginated_systems = paginator.paginate_queryset(
@@ -45,6 +52,9 @@ class HydroponicSystemViewSet(viewsets.ViewSet):
         return queryset
 
     def create(self, request):
+        """
+            Method for creating hydroponic system
+        """
         serializer = HydroponicSystemSerializer(
             data=request.data, context={"user": request.user})
         serializer.is_valid(raise_exception=True)
@@ -53,12 +63,18 @@ class HydroponicSystemViewSet(viewsets.ViewSet):
 
     @is_owner
     def retrieve(self, request, pk=None):
+        """
+            Method for retrieving a data about hydroponic system
+        """
         system = get_object_or_404(HydroponicSystem, id=pk)
         serializer = HydroponicSystemSerializer(system)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @is_owner
     def update(self, request, pk=None):
+        """
+            Method for updating a whole instance of hydroponic system
+        """
         system = get_object_or_404(HydroponicSystem, id=pk)
         serializer = HydroponicSystemSerializer(
             system, data=request.data, partial=False, context={"user": request.user})
@@ -68,6 +84,9 @@ class HydroponicSystemViewSet(viewsets.ViewSet):
 
     @is_owner
     def partial_update(self, request, pk=None):
+        """
+            Method for partialy updating a hydroponic system
+        """
         system = get_object_or_404(HydroponicSystem, id=pk)
         serializer = HydroponicSystemSerializer(
             system, data=request.data, partial=True, context={"user": request.user})
@@ -77,6 +96,9 @@ class HydroponicSystemViewSet(viewsets.ViewSet):
 
     @is_owner
     def destroy(self, request, pk=None):
+        """
+            Method for deleting a hydroponic system
+        """
         system = get_object_or_404(HydroponicSystem, id=pk)
         system.delete()
         return Response({"detail": "System deleted successfully"}, status=status.HTTP_200_OK)
