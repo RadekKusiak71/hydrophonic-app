@@ -1,18 +1,6 @@
 version: '3.8'
 
 services:
-  web:
-    build: .
-    ports:
-      - "8000:8000"
-    volumes:
-      - .:/app
-    env_file:
-      - .env
-    command: python3 manage.py runserver 0.0.0.0:8000
-    depends_on:
-      - database
-      
   database:
     restart: always
     image: postgres
@@ -23,14 +11,22 @@ services:
     env_file:
       - .env
     ports:
-      - "5433:5432"
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-  migrate:
+  web:
     build: .
+    ports:
+      - "8000:8000"
     volumes:
       - .:/app
     env_file:
       - .env
-    command: python3 manage.py migrate
+    command: bash -c "sleep 2; echo 'Database is ready, running migrations...'; python3 manage.py migrate; sleep 2; echo 'Starting the server...'; python3 manage.py runserver 0.0.0.0:8000"
     depends_on:
-      - web
+      database:
+        condition: service_healthy
