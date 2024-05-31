@@ -116,6 +116,11 @@ Systems allows user to get systems that are signed to his account
 
 ## Example Usage
 
+To test application:
+```
+python manage.py test --keepdb
+```
+
 To use pagination add queries
 
 ```
