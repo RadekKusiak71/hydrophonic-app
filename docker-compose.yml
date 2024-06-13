@@ -9,7 +9,7 @@ services:
       - POSTGRES_USER=${PG_USER}
       - POSTGRES_PASSWORD=${PG_PASSWORD}
     env_file:
-      - .env
+      - .env-tpl
     ports:
       - "5432:5432"
     healthcheck:
@@ -25,7 +25,7 @@ services:
     volumes:
       - .:/app
     env_file:
-      - .env
+      - .env-tpl
     command: bash -c "sleep 2; echo 'Database is ready, running migrations...'; python3 manage.py migrate; sleep 2; echo 'Starting the server...'; python3 manage.py runserver 0.0.0.0:8000"
     depends_on:
       database:
